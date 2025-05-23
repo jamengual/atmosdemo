@@ -1,0 +1,37 @@
+apiVersion: atmos/v1
+kind: AtmosVendorConfig
+metadata:
+  name: iac-vendoring
+  description: Atmos vendoring manifest for Atmos-iac repo
+spec:
+  imports: []
+  sources:
+    - component: "vpc"
+      source: "git@github.com/cloudposse/terraform-aws-vpc.git//?ref={{.Version}}"
+      version: "main"
+      targets:
+        - "components/terraform/vpc"
+      included_paths:
+        - "**/*.tf"
+        - "**/*.tfvars"
+        - "**/*.md"
+    - component: "tfstate"
+      source: "github.com/cloudposse/terraform-aws-tfstate-backend.git//?ref={{.Version}}"
+      version: "v1.5.0"
+      targets:
+        - "components/terraform/tfstate"
+      included_paths:
+        - "**/*.tf"
+        - "**/*.tfvars"
+        - "**/*.md"
+        - "**/*.tpl"
+    - component: "ssm"
+      source: "github.com/cloudposse/terraform-aws-ssm-parameter-store.git//?ref={{.Version}}"
+      version: "0.13.0"
+      targets:
+        - "components/terraform/ssm"
+      included_paths:
+        - "**/*.tf"
+        - "**/*.tfvars"
+        - "**/*.md"
+        - "**/*.tpl"

@@ -1,0 +1,43 @@
+import:
+  - dev/_defaults
+  - globals
+
+vars:
+  environment: dev
+  stage: west2
+  region: us-west-2
+
+components:
+  terraform:
+    null-resource/pepe:
+      metadata:
+        component: null-resource
+      vars:
+        name: !store demo/ssm vpc vpc_id
+
+    tfstate:
+      vars:
+        name: remote-state
+        enable_server_side_encryption: true
+        enabled: true
+        force_destroy: true
+        prevent_unencrypted_uploads: true
+        tags:
+          atmos_is_awesome: true
+
+    vpc:
+      vars:
+        name: vpc
+        ipv4_primary_cidr_block: "172.11.0.0/16"
+
+    demo/ssm:
+      metadata:
+        component: ssm
+      vars:
+        name: vpc
+        parameter_write:
+          - name: /dev/west2/vpc/vpc_id
+            value: !terraform.output vpc ".vpc_id // ""novpc"""
+            type: String
+            overwrite: "true"
+            description: "dev vpc id"

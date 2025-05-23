@@ -1,0 +1,8 @@
+workflows:
+  cleanup-all:
+    description: |
+      destroy all components
+    steps:
+      - command: terraform destroy vpc -s dev-west2 -auto-approve
+      - command: terraform destroy demo/ssm -s dev-west2 -auto-approve
+      - command: terraform destroy tfstate -s dev-west2 -auto-approve -lock=false #--auto-generate-backend-file=false

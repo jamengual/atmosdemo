@@ -1,0 +1,19 @@
+---
+# Environment global configs
+
+terraform:
+  vars: {}
+
+  backend_type: s3
+  backend:
+    s3:
+      encrypt: true
+      bucket: "dev-west2-remote-state"
+      key: "terraform.tfstate"
+      dynamodb_table: "dev-west2-remote-state-lock"
+      acl: "bucket-owner-full-control"
+      region: "us-west-2"
+
+  remote_state_backend:
+    s3:
+      role_arn: null
